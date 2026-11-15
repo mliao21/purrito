@@ -1,0 +1,150 @@
+:root {
+  --cream: #fff8f1;
+  --peach: #fbd3c4;
+  --pink: #f8c8dc;
+  --rose: #f4a7b9;
+  --lavender: #d9ccf2;
+  --mint: #c8ecd9;
+  --sky: #cfe6f7;
+  --butter: #ffe3a8;
+  --ink: #5b4a5c;
+  --ink-soft: #8b7a8c;
+  --card: rgba(255, 250, 246, 0.82);
+  --shadow: 0 18px 50px -20px rgba(120, 80, 110, 0.45);
+  --radius: 24px;
+  font-family: 'Fredoka', ui-rounded, system-ui, sans-serif;
+  color: var(--ink);
+}
+
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; margin: 0; }
+body { background: var(--cream); overflow: hidden; -webkit-font-smoothing: antialiased; }
+button, input { font: inherit; color: inherit; }
+code, kbd { font-family: ui-monospace, monospace; font-size: 0.85em; }
+
+.app { position: fixed; inset: 0; }
+.stage { position: absolute !important; inset: 0; }
+
+/* ── overlays ── */
+.overlay {
+  position: absolute; inset: 0; display: flex; padding: 16px;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(255, 240, 245, 0.35));
+}
+.overlay > * { pointer-events: auto; }
+.overlay.center { align-items: center; justify-content: center; }
+.overlay.bottom { align-items: flex-end; justify-content: center; }
+.overlay.side { align-items: center; justify-content: flex-start; padding-left: max(16px, 7vw); }
+@media (max-width: 800px) { .overlay.side { justify-content: center; padding-left: 16px; } }
+
+.card {
+  background: var(--card);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  border: 1.5px solid rgba(255, 255, 255, 0.8);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 28px;
+  width: min(440px, 100%);
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  animation: float-in 0.6s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+.card.wide { width: min(980px, 100%); padding: 22px; }
+@keyframes float-in { from { opacity: 0; transform: translateY(24px) scale(0.97); } }
+
+h1, h2 { margin: 0; font-weight: 600; }
+h2 { font-size: 1.35rem; }
+.logo { font-size: 2.8rem; letter-spacing: 0.5px; color: #e48aa6; text-shadow: 0 3px 0 #fff; }
+.muted { color: var(--ink-soft); margin: 6px 0 0; }
+.small { font-size: 0.85rem; }
+.row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+/* ── form ── */
+form { margin-top: 20px; display: flex; flex-direction: column; gap: 12px; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field span, .label { font-weight: 500; }
+input {
+  border: 2px solid var(--lavender); background: #fff; border-radius: 14px;
+  padding: 12px 14px; outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+}
+input:focus { border-color: var(--rose); box-shadow: 0 0 0 4px rgba(244, 167, 185, 0.25); }
+
+.breeds { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 8px; }
+.breed {
+  display: flex; align-items: center; gap: 8px; padding: 8px 10px; text-align: left;
+  background: #fff; border: 2px solid transparent; border-radius: 14px; cursor: pointer;
+  font-size: 0.88rem; transition: transform 0.15s, border-color 0.2s;
+}
+.breed:hover { transform: translateY(-2px); }
+.breed.selected { border-color: var(--rose); background: #fff5f8; }
+.swatch {
+  width: 26px; height: 26px; border-radius: 50%; flex: none;
+  box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.08), 0 0 0 2px #fff;
+}
+.breed-desc { min-height: 2.4em; }
+
+button.primary {
+  margin-top: 6px; padding: 14px; border: none; border-radius: 16px; cursor: pointer;
+  background: linear-gradient(135deg, var(--rose), #e9a3d6);
+  color: #fff; font-weight: 600; font-size: 1.05rem;
+  box-shadow: 0 8px 20px -8px rgba(228, 138, 166, 0.9);
+  transition: transform 0.15s, filter 0.2s, opacity 0.2s;
+}
+button.primary:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.05); }
+button.primary:disabled { opacity: 0.45; cursor: not-allowed; }
+button.ghost {
+  border: none; background: rgba(255, 255, 255, 0.7); border-radius: 12px;
+  padding: 8px 12px; cursor: pointer;
+}
+
+/* ── places ── */
+.places {
+  margin-top: 16px; display: grid; gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+.place {
+  position: relative; display: flex; flex-direction: column; gap: 6px; text-align: left;
+  padding: 16px; border-radius: 18px; border: 2px solid transparent; background: #fff;
+  cursor: pointer; transition: transform 0.18s, border-color 0.2s, box-shadow 0.2s;
+}
+.place:hover:not(:disabled), .place:focus-visible {
+  transform: translateY(-4px); border-color: var(--rose); box-shadow: var(--shadow); outline: none;
+}
+.place:disabled { cursor: not-allowed; opacity: 0.6; filter: grayscale(0.3); }
+.place .emoji { font-size: 2rem; }
+.tag {
+  align-self: flex-start; margin-top: 4px; padding: 2px 10px; border-radius: 999px;
+  font-size: 0.75rem; text-transform: capitalize; background: var(--lavender);
+}
+.tag.indoor { background: var(--peach); }
+.tag.outdoor { background: var(--mint); }
+.place:disabled .tag { background: #eee4ea; }
+
+/* ── in-game HUD ── */
+.hud { position: absolute; left: 0; right: 0; display: flex; padding: 16px; pointer-events: none; gap: 8px; }
+.hud > * { pointer-events: auto; }
+.hud.top { top: 0; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; }
+.hud.bottom-hint { bottom: 0; justify-content: center; }
+.pill {
+  background: var(--card); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(255, 255, 255, 0.85); border-radius: 999px;
+  padding: 8px 16px; box-shadow: 0 8px 24px -14px rgba(120, 80, 110, 0.6);
+}
+.pill.button { cursor: pointer; transition: transform 0.15s; }
+.pill.button:hover { transform: translateY(-2px); }
+kbd {
+  display: inline-block; min-width: 1.6em; padding: 1px 5px; margin: 0 1px; text-align: center;
+  background: #fff; border-radius: 6px; box-shadow: 0 2px 0 var(--lavender);
+}
+.nametag {
+  white-space: nowrap; padding: 3px 10px; border-radius: 999px; font-size: 13px; font-weight: 600;
+  background: rgba(255, 255, 255, 0.85); color: var(--ink); font-family: 'Fredoka', ui-rounded, sans-serif;
+  box-shadow: 0 4px 10px -4px rgba(120, 80, 110, 0.5);
+}
+
+@media (max-width: 600px) {
+  .card { padding: 20px; }
+  .logo { font-size: 2.2rem; }
+  .hud.bottom-hint { display: none; }
+}
