@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"os"
+	"path/filepath"
 	"testing"
 )
 
@@ -31,6 +33,23 @@ func TestPlacesEndpoint(t *testing.T) {
 	}
 	if playable == 0 {
 		t.Fatal("expected at least one playable place")
+	}
+}
+
+func TestExportJSON(t *testing.T) {
+	dir := t.TempDir()
+	if err := exportJSON(dir); err != nil {
+		t.Fatal(err)
+	}
+	for _, name := range []string{"breeds.json", "places.json"} {
+		b, err := os.ReadFile(filepath.Join(dir, name))
+		if err != nil {
+			t.Fatal(err)
+		}
+		var v []map[string]any
+		if err := json.Unmarshal(b, &v); err != nil || len(v) == 0 {
+			t.Fatalf("%s: bad contents (%v)", name, err)
+		}
 	}
 }
 

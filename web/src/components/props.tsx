@@ -454,11 +454,11 @@ export function Butterfly({ color = '#f8c8dc', center = [0, 1, 0] as V3, radius 
     <group ref={g}>
       <mesh ref={left}>
         <circleGeometry args={[0.09, 12]} />
-        <meshStandardMaterial color={color} side={THREE.DoubleSide} />
+        <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.5} side={THREE.DoubleSide} />
       </mesh>
       <mesh ref={right}>
         <circleGeometry args={[0.09, 12]} />
-        <meshStandardMaterial color={color} side={THREE.DoubleSide} />
+        <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.5} side={THREE.DoubleSide} />
       </mesh>
     </group>
   )

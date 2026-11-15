@@ -14,7 +14,16 @@ import (
 func main() {
 	addr := flag.String("addr", envOr("ADDR", ":8080"), "address to listen on")
 	static := flag.String("static", envOr("STATIC_DIR", "../web/dist"), "directory of the built frontend")
+	export := flag.String("export", "", "write breeds.json and places.json to this directory and exit (for static hosting)")
 	flag.Parse()
+
+	if *export != "" {
+		if err := exportJSON(*export); err != nil {
+			log.Fatal(err)
+		}
+		log.Printf("exported API data to %s", *export)
+		return
+	}
 
 	srv := &http.Server{
 		Addr:              *addr,
@@ -57,6 +66,24 @@ func spaHandler(dir string) http.Handler {
 		}
 		files.ServeHTTP(w, r)
 	})
+}
+
+// exportJSON writes the API data as static files so the site can run
+// without this server (e.g. on GitHub Pages).
+func exportJSON(dir string) error {
+	if err := os.MkdirAll(dir, 0o755); err != nil {
+		return err
+	}
+	for name, v := range map[string]any{"breeds.json": breeds, "places.json": places} {
+		b, err := json.MarshalIndent(v, "", "  ")
+		if err != nil {
+			return err
+		}
+		if err := os.WriteFile(filepath.Join(dir, name), b, 0o644); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func writeJSON(w http.ResponseWriter, v any) {

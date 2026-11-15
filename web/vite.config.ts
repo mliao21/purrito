@@ -3,6 +3,8 @@ import react from '@vitejs/plugin-react'
 
 // In development the Go API runs on :8080 and Vite proxies /api to it.
 export default defineConfig({
+  // GitHub Pages serves the site from /<repo>/, so the build sets VITE_BASE=/purrito/
+  base: process.env.VITE_BASE ?? '/',
   plugins: [react()],
   build: { chunkSizeWarningLimit: 1500 }, // three.js is big; that's expected
   server: {

@@ -2,6 +2,10 @@
 
 Become a cat and wander somewhere cozy. Pick a name and a breed, choose a place, then roam around in soft pastel 3D.
 
+### ▶️ [Play Purrito in your browser](https://mliao21.github.io/purrito/)
+
+No install needed. Everything runs in your own browser. *(Tip: Ctrl/Cmd-click to open it in a new tab.)*
+
 - **Frontend** – React + TypeScript + Vite, 3D with [Three.js](https://threejs.org) via [React Three Fiber](https://r3f.docs.pmnd.rs). Every cat and prop is built from simple shapes in code — no paid assets.
 - **Backend** – Go (standard library only). Serves `/api/breeds`, `/api/places` and the built site.
 
@@ -27,6 +31,17 @@ cd ../server && go run .        # open http://localhost:8080
 ```
 
 Tests: `cd server && go test ./...` · Typecheck: `cd web && npm run typecheck`
+
+## How the online version works
+
+Every push to `main` triggers [`.github/workflows/pages.yml`](.github/workflows/pages.yml), which:
+
+1. runs the Go tests,
+2. exports the API data as static JSON (`go run . -export ../web/public/data`),
+3. builds the site in static mode, and
+4. publishes it to GitHub Pages at no cost.
+
+The visitor's browser does all the 3D work, so no server is needed online.
 
 ## Controls
 

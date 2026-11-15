@@ -100,9 +100,15 @@ export default function App() {
       {error && (
         <div className="overlay center">
           <div className="card">
-            <h2>🙀 Can't reach the Purrito server</h2>
+            <h2>🙀 Couldn't load the cats</h2>
             <p className="muted">
-              Start the Go API with <code>go run .</code> inside <code>server/</code>, then refresh.
+              {import.meta.env.VITE_STATIC_DATA === '1' ? (
+                'Please refresh the page to try again.'
+              ) : (
+                <>
+                  Start the Go API with <code>go run .</code> inside <code>server/</code>, then refresh.
+                </>
+              )}
             </p>
           </div>
         </div>
